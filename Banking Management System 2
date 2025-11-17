@@ -1,0 +1,138 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Account {
+    int accountNumber;
+    string name;
+    float balance;
+};
+
+// Function prototypes
+void addAccount(Account accounts[], int &numAccounts);
+void deposit(Account accounts[], int numAccounts);
+void withdraw(Account accounts[], int numAccounts);
+void checkBalance(Account accounts[], int numAccounts);
+
+void addAccount(Account accounts[], int &numAccounts) {
+    Account newAccount;
+
+    cout << "\nEnter account number: ";
+    cin >> newAccount.accountNumber;
+
+    cout << "Enter account holder name: ";
+    cin.ignore();               // clear buffer before getline
+    getline(cin, newAccount.name);
+
+    newAccount.balance = 0.0f;
+
+    accounts[numAccounts] = newAccount;
+    numAccounts++;
+
+    cout << "\nAccount added successfully!\n";
+}
+
+void deposit(Account accounts[], int numAccounts) {
+    int accountNumber;
+    float amount;
+
+    cout << "\nEnter account number: ";
+    cin >> accountNumber;
+
+    for (int i = 0; i < numAccounts; i++) {
+        if (accounts[i].accountNumber == accountNumber) {
+            cout << "Enter amount to deposit: ";
+            cin >> amount;
+
+            accounts[i].balance += amount;
+            cout << "\nAmount deposited successfully!\n";
+            return;
+        }
+    }
+    cout << "\nAccount not found!\n";
+}
+
+void withdraw(Account accounts[], int numAccounts) {
+    int accountNumber;
+    float amount;
+
+    cout << "\nEnter account number: ";
+    cin >> accountNumber;
+
+    for (int i = 0; i < numAccounts; i++) {
+        if (accounts[i].accountNumber == accountNumber) {
+            cout << "Enter amount to withdraw: ";
+            cin >> amount;
+
+            if (accounts[i].balance >= amount) {
+                accounts[i].balance -= amount;
+                cout << "\nAmount withdrawn successfully!\n";
+            } else {
+                cout << "\nInsufficient balance!\n";
+            }
+            return;
+        }
+    }
+    cout << "\nAccount not found!\n";
+}
+
+void checkBalance(Account accounts[], int numAccounts) {
+    int accountNumber;
+
+    cout << "\nEnter account number: ";
+    cin >> accountNumber;
+
+    for (int i = 0; i < numAccounts; i++) {
+        if (accounts[i].accountNumber == accountNumber) {
+            cout << "\nAccount Holder: " << accounts[i].name << endl;
+            cout << "Balance: " << accounts[i].balance << endl;
+            return;
+        }
+    }
+    cout << "\nAccount not found!\n";
+}
+
+int main() {
+    Account accounts[100];
+    int numAccounts = 0;
+    int choice;
+
+    do {
+        cout << "\n==============================\n";
+        cout << "  WELCOME TO BANK MANAGEMENT SYSTEM  \n";
+        cout << "==============================\n";
+
+        cout << "\nPlease choose an option:\n";
+        cout << "[1] Add Account\n";
+        cout << "[2] Deposit Money\n";
+        cout << "[3] Withdraw Money\n";
+        cout << "[4] Check Balance\n";
+        cout << "[5] Exit\n";
+
+        cout << "\nEnter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                addAccount(accounts, numAccounts);
+                break;
+            case 2:
+                deposit(accounts, numAccounts);
+                break;
+            case 3:
+                withdraw(accounts, numAccounts);
+                break;
+            case 4:
+                checkBalance(accounts, numAccounts);
+                break;
+            case 5:
+                cout << "\nThank you for using the Bank Management System. Goodbye!\n";
+                break;
+            default:
+                cout << "\nInvalid choice! Please try again.\n";
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
